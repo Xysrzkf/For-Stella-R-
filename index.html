@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Stella (R) ✨</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Georgia', serif;
+        background: linear-gradient(135deg, #2d0b1e 0%, #6d1d3d 50%, #b23a48 100%);
+        background-attachment: fixed;
+        color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .bg-image {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: url('Toff.jpg') center/cover no-repeat;
+        opacity: 0.3;
+        filter: blur(4px);
+        z-index: -1;
+    }
+
+    .container {
+        max-width: 600px;
+        width: 85%;
+        padding: 40px;
+        background: rgba(20, 10, 15, 0.8);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        animation: popIn 1s ease-out;
+    }
+
+    @keyframes popIn {
+        0% { transform: scale(0.9); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .fade-text {
+        opacity: 0;
+        animation: fadeIn 1.5s forwards;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        color: #ffcad4;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    button {
+        margin-top: 20px;
+        padding: 12px 30px;
+        font-size: 16px;
+        background: #b23a48;
+        border: 1px solid #ffb3c1;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    button:hover {
+        background: #ff4d6d;
+        box-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
+    }
+
+    .card {
+        margin: 15px auto;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 179, 193, 0.3);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.4s;
+        color: #ffb3c1;
+        font-weight: bold;
+    }
+
+    .card:hover { background: rgba(255, 255, 255, 0.15); border-color: #ffb3c1; }
+
+    textarea {
+        width: 100%;
+        height: 80px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid #b23a48;
+        border-radius: 8px;
+        color: white;
+        padding: 12px;
+        margin-top: 15px;
+        box-sizing: border-box;
+    }
+
+    #typewriter {
+        font-style: italic;
+        color: #f2f2f2;
+        margin-top: 20px;
+        min-height: 50px;
+    }
+
+    .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="bg-image"></div>
+
+<audio id="bgMusic" loop>
+    <source src="Marhoo.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <div id="intro">
+        <h1 style="color: #ffb3c1; font-family: 'Times New Roman', serif;">Hello Stella... 👋</h1>
+        <p class="fade-text" style="animation-delay:0.5s;">On ne se voit pas aujourd'hui...</p>
+        <p class="fade-text" style="animation-delay:1.5s;">Mais j’avais quand même envie de marquer quelque chose. Alors j’ai préparé un petit truc.</p>
+        <button onclick="start()">Découvrons-le ensemble</button>
+    </div>
+
+    <div id="cards" class="hidden">
+        <p style="color: #ffb3c1;">Choisis une carte, petite curieuse...</p>
+        <div id="card1" class="card" onclick="chooseCard(1, this)">🔥 Ce que j’aime déjà chez toi</div>
+        <div id="card2" class="card" onclick="chooseCard(2, this)">🤍 Ce qui m’intrigue encore</div>
+        <div id="card3" class="card" onclick="chooseCard(3, this)">🌙 Ce que j’ai hâte de découvrir</div>
+        <div id="typewriter"></div>
+    </div>
+
+    <div id="gageSection" class="hidden">
+        <h2 style="color: #ffb3c1;">Hop hop hop ! 😏</h2>
+        <p id="gageMessage">Tu es bien trop gourmande... Pour débloquer une autre carte, tu dois me promettre quelque chose (photo, vidéo, gage...).</p>
+        <textarea id="gageText" name="promesse" placeholder="Alors, Handsome attend ta promesse..."></textarea>
+        <br>
+        <button onclick="unlock()">Je le promets</button>
+    </div>
+
+    <div id="valentineQuestion" class="hidden">
+        <h2 style="color: #ffb3c1;">Je me lance...</h2>
+        <p>Bon, je stresse un peu mais...</p>
+        <p style="font-size: 1.3rem; margin: 25px 0;">Stella, est-ce que tu accepterais d'être ma Valentine,<br>le temps d'une parenthèse à distance ? 🌹</p>
+        <button onclick="ending('Je prends le risque')">Je prends le risque</button>
+        <button onclick="ending('Je suis curieuse')">Je suis curieuse</button>
+    </div>
+
+    <div id="ending" class="hidden">
+        <h1 style="color: #ffb3c1;">Yesss ! ❤️</h1>
+        <p>Promesses bien notées... je saurai te les rappeler au bon moment ! 😉</p>
+        <p>Et ne m’en veux pas si parfois je suis maladroit… J’apprends sur le tas.</p>
+        <p>J'apprends à te connaître, et chaque jour c'est un plaisir.</p>
+        <br>
+        <p style="font-size: 1.5rem;">Bisous.</p>
+    </div>
+</div>
+
+<script>
+    let cardsOpened = 0;
+    const music = document.getElementById("bgMusic");
+    const formEndpoint = "https://formspree.io/f/mjgewglq";
+
+    function start() {
+        music.play().catch(e => console.log("L'audio attend un clic"));
+        document.getElementById("intro").style.display = "none";
+        document.getElementById("cards").classList.remove("hidden");
+    }
+
+    function typeWriter(text, i, fnCallback) {
+        if (i < text.length) {
+            document.getElementById("typewriter").innerHTML = text.substring(0, i+1) + '<span style="color:#ffb3c1">|</span>';
+            setTimeout(() => typeWriter(text, i + 1, fnCallback), 40);
+        } else if (typeof fnCallback == 'function') {
+            setTimeout(fnCallback, 1000);
+        }
+    }
+
+    function chooseCard(num, el) {
+        if (el.classList.contains("opened")) return;
+        
+        if (cardsOpened >= 1 && !el.dataset.unlocked) {
+            document.getElementById("cards").classList.add("hidden");
+            document.getElementById("gageSection").classList.remove("hidden");
+            window.pendingCard = {num, el}; 
+            return;
+        }
+
+        el.classList.add("opened");
+        el.style.opacity = "0.4";
+        el.style.borderStyle = "solid";
+        cardsOpened++;
+
+        let msg = "";
+        if (num === 1) msg = "Ta manière d'être, ta façon de t'exprimer, ce que tu dégages… et surtout ce petit phénomène étrange où tu reviens dans ma tête sans que je t’y invite. Ça me surprend, ça me fait sourire, et je ne vais pas faire semblant que ça me laisse indifférent...";
+        if (num === 2) msg = "Ce que tu caches derrière ton assurance... Comment tu es quand tu es vraiment à l'aise.";
+        if (num === 3) msg = "Ton regard quand on se verra enfin... L'ambiance entre nous en vrai.";
+
+        document.getElementById("typewriter").innerHTML = "";
+        typeWriter(msg, 0, function() {
+            if (cardsOpened === 3) {
+                setTimeout(() => {
+                    document.getElementById("cards").classList.add("hidden");
+                    document.getElementById("valentineQuestion").classList.remove("hidden");
+                }, 1500);
+            }
+        });
+    }
+
+    function unlock() {
+        const val = document.getElementById("gageText").value;
+        if (val.length < 5) {
+            alert("Handsome mérite une vraie promesse... 😏");
+            return;
+        }
+
+        // ENVOI À FORMSPREE
+        fetch(formEndpoint, {
+            method: 'POST',
+            body: JSON.stringify({ message: "Nouvelle promesse de Stella", promesse: val }),
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        });
+        
+        if(window.pendingCard) {
+            window.pendingCard.el.dataset.unlocked = "true";
+            document.getElementById("gageSection").classList.add("hidden");
+            document.getElementById("cards").classList.remove("hidden");
+            document.getElementById("gageText").value = ""; 
+            chooseCard(window.pendingCard.num, window.pendingCard.el);
+        }
+    }
+
+    function ending(btnText) {
+        // ENVOI DE LA RÉPONSE FINALE
+        fetch(formEndpoint, {
+            method: 'POST',
+            body: JSON.stringify({ message: "Réponse Valentine Stella", reponse: btnText, statut: "OUI !" }),
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        });
+
+        document.getElementById("valentineQuestion").classList.add("hidden");
+        document.getElementById("ending").classList.remove("hidden");
+    }
+</script>
+</body>
+</html>
+
+
